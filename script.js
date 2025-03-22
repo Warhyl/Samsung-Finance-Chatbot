@@ -25,10 +25,19 @@ document.addEventListener('DOMContentLoaded', function() {
     ]);
     
     // Event listeners
-    sendButton.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
+    sendButton.addEventListener('click', () => {
+        const text = userInput.value.trim();
+        if (text) {
+            handleUserInput(text);
+        }
+    });
+
+    userInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            const text = userInput.value.trim();
+            if (text) {
+                handleUserInput(text);
+            }
         }
     });
     
@@ -700,22 +709,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // ======================================
     
     function sendMessage() {
-        const message = userInput.value.trim();
-        if (message === '') return;
+        const text = userInput.value.trim();
+        if (text === '') return;
         
-        // Add user message to chat
-        addMessage(message, 'user');
+        // Display user message
+        addMessage(text, 'user');
+        
+        // Clear input
         userInput.value = '';
         
-        // Add to conversation history
-        conversationHistory.push({
-            sender: 'user',
-            message: message,
-            timestamp: new Date().toISOString()
-        });
+        // Show typing indicator
+        showTypingIndicator();
         
-        // Process the message and get a response
-        processMessage(message);
+        // Process response with a small delay to simulate thinking
+        setTimeout(() => {
+            hideTypingIndicator();
+            
+            // Get response from knowledge base
+            const responseObj = findResponseInKnowledgeBase(text);
+            
+            // Add bot response
+            addMessage(responseObj.message, 'bot');
+            
+            // Display quick replies if any
+            if (responseObj.quickReplies && responseObj.quickReplies.length > 0) {
+                displayQuickReplies(responseObj.quickReplies);
+            }
+        }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
     }
     
     function addMessage(message, sender) {
@@ -761,23 +781,75 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function displayQuickReplies(replies) {
-        // Clear existing quick replies
-        quickReplyContainer.innerHTML = '';
+    function displayQuickReplies(quickReplies) {
+        // Remove existing quick replies if any
+        const existingContainer = document.querySelector('.quick-reply-container');
+        if (existingContainer) {
+            existingContainer.remove();
+        }
+
+        if (!quickReplies || quickReplies.length === 0) return;
+
+        const chatMessages = document.getElementById('chat-messages');
+        const container = document.createElement('div');
+        container.className = 'quick-reply-container';
         
-        // Create and add new quick reply buttons
-        replies.forEach(reply => {
-            const button = document.createElement('button');
-            button.className = 'quick-reply-btn';
-            button.textContent = reply;
-            button.addEventListener('click', () => {
-                userInput.value = reply;
-                sendMessage();
-                // Clear quick replies after selection
-                quickReplyContainer.innerHTML = '';
+        // Split the quick replies into pages of 4
+        const pages = [];
+        for (let i = 0; i < quickReplies.length; i += 4) {
+            pages.push(quickReplies.slice(i, i + 4));
+        }
+        
+        let currentPage = 0;
+        
+        function renderPage(pageIndex) {
+            // Clear the container
+            container.innerHTML = '';
+            
+            // Create page element
+            const pageElement = document.createElement('div');
+            pageElement.className = 'quick-reply-page active';
+            
+            // Add buttons for the current page
+            pages[pageIndex].forEach(reply => {
+                const button = document.createElement('button');
+                button.className = 'quick-reply-btn';
+                button.textContent = reply;
+                button.addEventListener('click', () => {
+                    handleUserInput(reply);
+                });
+                pageElement.appendChild(button);
             });
-            quickReplyContainer.appendChild(button);
-        });
+            
+            // Add "More Options" button if there are more pages
+            if (pageIndex < pages.length - 1) {
+                const moreButton = document.createElement('button');
+                moreButton.className = 'quick-reply-btn more-options';
+                moreButton.textContent = 'More Options';
+                moreButton.addEventListener('click', () => {
+                    currentPage = (currentPage + 1) % pages.length;
+                    renderPage(currentPage);
+                });
+                pageElement.appendChild(moreButton);
+            } else if (pages.length > 1) {
+                // Add "Back" button on the last page
+                const backButton = document.createElement('button');
+                backButton.className = 'quick-reply-btn more-options';
+                backButton.textContent = 'Back';
+                backButton.addEventListener('click', () => {
+                    currentPage = 0;
+                    renderPage(currentPage);
+                });
+                pageElement.appendChild(backButton);
+            }
+            
+            container.appendChild(pageElement);
+        }
+        
+        // Initial render
+        renderPage(currentPage);
+        chatMessages.appendChild(container);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
     function processMessage(message) {
@@ -919,5 +991,18 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Found ${allKeywords.length} total keywords in knowledge base:`);
         console.table(allKeywords);
         return allKeywords;
+    }
+
+    function handleUserInput(text) {
+        // Set the input value
+        userInput.value = text;
+        // Send the message
+        sendMessage();
+        
+        // Remove any quick reply container
+        const existingContainer = document.querySelector('.quick-reply-container');
+        if (existingContainer) {
+            existingContainer.remove();
+        }
     }
 }); 
