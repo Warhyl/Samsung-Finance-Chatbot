@@ -13,16 +13,54 @@ document.addEventListener('DOMContentLoaded', function() {
     quickReplyContainer.className = 'quick-reply-container';
     document.querySelector('.chat-input').before(quickReplyContainer);
     
-    // Initial bot message
-    addMessage("Hello! I'm your Samsung Finance+ virtual assistant. How can I help you today?", 'bot');
-    displayQuickReplies([
-        "KYC Issues", 
-        "Payment & Loan Issues", 
-        "Application & System Errors", 
-        "Product & Order Issues", 
-        "Device Security & Lock Issues", 
-        "Device Replacement Inquiries"
-    ]);
+    // Handle all scroll-related behaviors - improved for all devices
+    function setupScrollBehaviors() {
+        // Add scroll event listener to implement smart behavior
+        chatMessages.addEventListener('scroll', () => {
+            // Improved calculation to detect when user is near bottom
+            const scrollPosition = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight;
+            const isNearBottom = scrollPosition < 100;
+            
+            // Show/hide quick replies based on scroll position
+            const quickReplyContainer = document.querySelector('.quick-reply-container');
+            if (quickReplyContainer) {
+                if (isNearBottom) {
+                    quickReplyContainer.style.opacity = '1';
+                    quickReplyContainer.style.transform = 'translateY(0)';
+                } else {
+                    quickReplyContainer.style.opacity = '0.5';
+                    quickReplyContainer.style.transform = 'translateY(10px)';
+                }
+            }
+            
+            // Show/hide the scroll button - moved from separate listener for better performance
+            const scrollButton = document.querySelector('.scroll-to-bottom');
+            if (scrollButton) {
+                scrollButton.style.display = isNearBottom ? 'none' : 'flex';
+            }
+        });
+    }
+    
+    // Call setup function
+    setupScrollBehaviors();
+    
+    // Initial chatbot message
+    setTimeout(() => {
+        const initialBotMessage = "Hello! I'm your Samsung Finance+ virtual assistant. How can I help you today?";
+        addMessage(initialBotMessage, 'bot');
+        
+        // Display initial quick replies
+        setTimeout(() => {
+            displayQuickReplies([
+                "KYC Issues", 
+                "Payment & Loan Issues", 
+                "Application & System Errors", 
+                "Product & Order Issues", 
+                "Device Security & Lock Issues", 
+                "Device Replacement Inquiries"
+            ]);
+        }, 500);
+    }, 1000);
     
     // Event listeners
     sendButton.addEventListener('click', () => {
@@ -733,7 +771,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Display quick replies if any
             if (responseObj.quickReplies && responseObj.quickReplies.length > 0) {
-                displayQuickReplies(responseObj.quickReplies);
+                // Add a short delay to ensure the message is read before quick replies appear
+                setTimeout(() => {
+                    displayQuickReplies(responseObj.quickReplies);
+                }, 500);
             }
         }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
     }
@@ -748,7 +789,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         messageContainer.appendChild(messageElement);
         chatMessages.appendChild(messageContainer);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Ensure scroll to bottom after the message is rendered
+        setTimeout(scrollToBottom, 100);
         
         // If it's a bot message, add it to history
         if (sender === 'bot') {
@@ -793,6 +836,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const chatMessages = document.getElementById('chat-messages');
         const container = document.createElement('div');
         container.className = 'quick-reply-container';
+        
+        // Create a message-container to hold the quick replies
+        const messageContainer = document.createElement('div');
+        messageContainer.className = 'message-container quick-reply-message';
         
         // Split the quick replies into pages of 4
         const pages = [];
@@ -848,8 +895,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Initial render
         renderPage(currentPage);
-        chatMessages.appendChild(container);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        messageContainer.appendChild(container);
+        chatMessages.appendChild(messageContainer);
+        
+        // Ensure scroll to bottom after quick replies are added
+        setTimeout(scrollToBottom, 100);
     }
     
     function processMessage(message) {
@@ -1005,4 +1055,42 @@ document.addEventListener('DOMContentLoaded', function() {
             existingContainer.remove();
         }
     }
+
+    // Ensure proper scrolling to the bottom of chat messages - improved for all devices
+    function scrollToBottom() {
+        const chatMessages = document.getElementById('chat-messages');
+        
+        // Use smooth scrolling on devices that support it
+        if ('scrollBehavior' in document.documentElement.style) {
+            chatMessages.scrollTo({
+                top: chatMessages.scrollHeight,
+                behavior: 'smooth'
+            });
+        } else {
+            // Fallback for browsers that don't support smooth scrolling
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    }
+
+    // Add a scroll-to-bottom button - improved to work on all devices
+    function addScrollToBottomButton() {
+        const chatContainer = document.querySelector('.chat-container');
+        const scrollButton = document.createElement('button');
+        scrollButton.className = 'scroll-to-bottom';
+        scrollButton.innerHTML = '<i class="fas fa-arrow-down"></i>';
+        scrollButton.style.display = 'none'; // Initially hidden
+        scrollButton.setAttribute('aria-label', 'Scroll to bottom'); // Accessibility improvement
+        scrollButton.addEventListener('click', scrollToBottom);
+        chatContainer.appendChild(scrollButton);
+        
+        // Initial check for scroll position
+        const chatMessages = document.getElementById('chat-messages');
+        const isAtBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < 50;
+        scrollButton.style.display = isAtBottom ? 'none' : 'flex';
+        
+        // Button is now shown/hidden in the main scroll event listener in setupScrollBehaviors
+    }
+
+    // Call this when the DOM is loaded
+    addScrollToBottomButton();
 }); 
