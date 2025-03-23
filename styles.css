@@ -42,7 +42,7 @@ body::before {
 }
 
 .chat-header {
-    background: linear-gradient(135deg, #1565C0 0%, #0a4da2 100%);
+    background: #0a4da2;
     color: white;
     padding: 12px 18px;
     z-index: 10;
@@ -60,14 +60,14 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 35px;
-    width: 35px;
-    background-color: rgba(255, 255, 255, 0.15);
-    color: white;
+    height: 44px;
+    width: 44px;
+    background-color: #0a4da2;
+    color: #fff;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
     margin-right: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.9);
+    border: 2px solid #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -390,9 +390,12 @@ body::before {
     }
     
     .sf-logo {
-        height: 34px;
-        width: 34px;
+        height: 40px;
+        width: 40px;
         font-size: 16px;
+        background-color: #0a4da2;
+        color: #fff;
+        border: 2px solid #fff;
     }
     
     .header-title h1 {
