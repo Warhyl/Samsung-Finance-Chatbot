@@ -227,8 +227,55 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear existing quick replies
         quickReplySection.innerHTML = '';
         
-        // Add new quick replies
-        replies.forEach(reply => {
+        // Track which buttons are currently visible
+        let currentIndex = 0;
+        const buttonsPerPage = 3;
+        
+        // Function to show buttons for current page
+        function showButtons(startIndex) {
+            // Clear the container first
+            quickReplySection.innerHTML = '';
+            
+            // Calculate end index (either 3 more or end of array)
+            const endIndex = Math.min(startIndex + buttonsPerPage, replies.length);
+            
+            // Create buttons for current page
+            for (let i = startIndex; i < endIndex; i++) {
+                const reply = replies[i];
+                const button = createQuickReplyButton(reply);
+                quickReplySection.appendChild(button);
+            }
+            
+            // Add "More" button if there are more options
+            if (endIndex < replies.length) {
+                const moreButton = document.createElement('button');
+                moreButton.classList.add('quick-reply-btn', 'more-options-btn');
+                moreButton.textContent = 'More Options';
+                
+                moreButton.addEventListener('click', function() {
+                    // Show next set of buttons
+                    showButtons(endIndex);
+                });
+                
+                quickReplySection.appendChild(moreButton);
+            } 
+            // Add a "Back to first options" button if we're not on the first page
+            else if (startIndex > 0 && endIndex === replies.length) {
+                const backButton = document.createElement('button');
+                backButton.classList.add('quick-reply-btn', 'more-options-btn');
+                backButton.textContent = 'Show First Options';
+                
+                backButton.addEventListener('click', function() {
+                    // Go back to first page of options
+                    showButtons(0);
+                });
+                
+                quickReplySection.appendChild(backButton);
+            }
+        }
+        
+        // Function to create a quick reply button
+        function createQuickReplyButton(reply) {
             const button = document.createElement('button');
             button.classList.add('quick-reply-btn');
             
@@ -259,8 +306,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 800);
             });
             
-            quickReplySection.appendChild(button);
-        });
+            return button;
+        }
+        
+        // Show first page of buttons
+        showButtons(0);
     }
     
     // Start with the main menu
