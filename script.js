@@ -13,69 +13,22 @@ document.addEventListener('DOMContentLoaded', function() {
     quickReplyContainer.className = 'quick-reply-container';
     document.querySelector('.chat-input').before(quickReplyContainer);
     
-    // Handle all scroll-related behaviors - improved for all devices
-    function setupScrollBehaviors() {
-        // Add scroll event listener to implement smart behavior
-        chatMessages.addEventListener('scroll', () => {
-            // Improved calculation to detect when user is near bottom
-            const scrollPosition = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight;
-            const isNearBottom = scrollPosition < 100;
-            
-            // Show/hide quick replies based on scroll position
-            const quickReplyContainer = document.querySelector('.quick-reply-container');
-            if (quickReplyContainer) {
-                if (isNearBottom) {
-                    quickReplyContainer.style.opacity = '1';
-                    quickReplyContainer.style.transform = 'translateY(0)';
-                } else {
-                    quickReplyContainer.style.opacity = '0.5';
-                    quickReplyContainer.style.transform = 'translateY(10px)';
-                }
-            }
-            
-            // Show/hide the scroll button - moved from separate listener for better performance
-            const scrollButton = document.querySelector('.scroll-to-bottom');
-            if (scrollButton) {
-                scrollButton.style.display = isNearBottom ? 'none' : 'flex';
-            }
-        });
-    }
-    
-    // Call setup function
-    setupScrollBehaviors();
-    
-    // Initial chatbot message
-    setTimeout(() => {
-        const initialBotMessage = "Hello! I'm your Samsung Finance+ virtual assistant. How can I help you today?";
-        addMessage(initialBotMessage, 'bot');
-        
-        // Display initial quick replies
-        setTimeout(() => {
-            displayQuickReplies([
-                "KYC Issues", 
-                "Payment & Loan Issues", 
-                "Application & System Errors", 
-                "Product & Order Issues", 
-                "Device Security & Lock Issues", 
-                "Device Replacement Inquiries"
-            ]);
-        }, 500);
-    }, 1000);
+    // Initial bot message
+    addMessage("Hello! I'm your Samsung Finance+ virtual assistant. How can I help you today?", 'bot');
+    displayQuickReplies([
+        "KYC Issues", 
+        "Payment & Loan Issues", 
+        "Application & System Errors", 
+        "Product & Order Issues", 
+        "Device Security & Lock Issues", 
+        "Device Replacement Inquiries"
+    ]);
     
     // Event listeners
-    sendButton.addEventListener('click', () => {
-        const text = userInput.value.trim();
-        if (text) {
-            handleUserInput(text);
-        }
-    });
-
-    userInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            const text = userInput.value.trim();
-            if (text) {
-                handleUserInput(text);
-            }
+    sendButton.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
         }
     });
     
@@ -747,51 +700,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // ======================================
     
     function sendMessage() {
-        const text = userInput.value.trim();
-        if (text === '') return;
+        const message = userInput.value.trim();
+        if (message === '') return;
         
-        // Display user message
-        addMessage(text, 'user');
-        
-        // Clear input
+        // Add user message to chat
+        addMessage(message, 'user');
         userInput.value = '';
         
-        // Show typing indicator
-        showTypingIndicator();
+        // Add to conversation history
+        conversationHistory.push({
+            sender: 'user',
+            message: message,
+            timestamp: new Date().toISOString()
+        });
         
-        // Process response with a small delay to simulate thinking
-        setTimeout(() => {
-            hideTypingIndicator();
-            
-            // Get response from knowledge base
-            const responseObj = findResponseInKnowledgeBase(text);
-            
-            // Add bot response
-            addMessage(responseObj.message, 'bot');
-            
-            // Display quick replies if any
-            if (responseObj.quickReplies && responseObj.quickReplies.length > 0) {
-                // Add a short delay to ensure the message is read before quick replies appear
-                setTimeout(() => {
-                    displayQuickReplies(responseObj.quickReplies);
-                }, 500);
-            }
-        }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+        // Process the message and get a response
+        processMessage(message);
     }
     
     function addMessage(message, sender) {
-        const messageContainer = document.createElement('div');
-        messageContainer.className = 'message-container';
-        
         const messageElement = document.createElement('div');
-        messageElement.className = `message ${sender}-message`;
+        messageElement.classList.add('message');
+        messageElement.classList.add(sender + '-message');
         messageElement.textContent = message;
+        chatMessages.appendChild(messageElement);
         
-        messageContainer.appendChild(messageElement);
-        chatMessages.appendChild(messageContainer);
-        
-        // Ensure scroll to bottom after the message is rendered
-        setTimeout(scrollToBottom, 100);
+        // Scroll to the bottom of the chat
+        chatMessages.scrollTop = chatMessages.scrollHeight;
         
         // If it's a bot message, add it to history
         if (sender === 'bot') {
@@ -824,82 +759,48 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function displayQuickReplies(quickReplies) {
-        // Remove existing quick replies if any
-        const existingContainer = document.querySelector('.quick-reply-container');
-        if (existingContainer) {
-            existingContainer.remove();
-        }
-
-        if (!quickReplies || quickReplies.length === 0) return;
-
-        const chatMessages = document.getElementById('chat-messages');
-        const container = document.createElement('div');
-        container.className = 'quick-reply-container';
+    function displayQuickReplies(replies) {
+        const quickReplySection = document.getElementById('quick-reply-section');
+        quickReplySection.innerHTML = ''; // Clear existing buttons
         
-        // Create a message-container to hold the quick replies
-        const messageContainer = document.createElement('div');
-        messageContainer.className = 'message-container quick-reply-message';
+        if (!replies || replies.length === 0) return;
         
-        // Split the quick replies into pages of 4
-        const pages = [];
-        for (let i = 0; i < quickReplies.length; i += 4) {
-            pages.push(quickReplies.slice(i, i + 4));
-        }
-        
-        let currentPage = 0;
-        
-        function renderPage(pageIndex) {
-            // Clear the container
-            container.innerHTML = '';
+        // Add quick reply buttons
+        for (let i = 0; i < replies.length; i++) {
+            const button = document.createElement('button');
+            button.className = 'quick-reply-btn';
             
-            // Create page element
-            const pageElement = document.createElement('div');
-            pageElement.className = 'quick-reply-page active';
+            // Create span for text to allow proper text wrapping
+            const textSpan = document.createElement('span');
+            textSpan.textContent = replies[i];
+            button.appendChild(textSpan);
             
-            // Add buttons for the current page
-            pages[pageIndex].forEach(reply => {
-                const button = document.createElement('button');
-                button.className = 'quick-reply-btn';
-                button.textContent = reply;
-                button.addEventListener('click', () => {
-                    handleUserInput(reply);
+            button.addEventListener('click', function() {
+                document.getElementById('user-input').value = replies[i];
+                sendMessage();
+            });
+            quickReplySection.appendChild(button);
+        }
+        
+        // Add "More Options" button if there are more than 4 options
+        if (replies.length > 4) {
+            const moreOptionsBtn = document.createElement('button');
+            moreOptionsBtn.className = 'more-options-btn';
+            moreOptionsBtn.textContent = 'More Options';
+            moreOptionsBtn.style.display = 'inline-flex';
+            
+            moreOptionsBtn.addEventListener('click', function() {
+                // Show all buttons
+                const buttons = document.querySelectorAll('.quick-reply-btn');
+                buttons.forEach(btn => {
+                    btn.classList.add('show');
                 });
-                pageElement.appendChild(button);
+                // Hide the "More Options" button
+                this.style.display = 'none';
             });
             
-            // Add "More Options" button if there are more pages
-            if (pageIndex < pages.length - 1) {
-                const moreButton = document.createElement('button');
-                moreButton.className = 'quick-reply-btn more-options';
-                moreButton.textContent = 'More Options';
-                moreButton.addEventListener('click', () => {
-                    currentPage = (currentPage + 1) % pages.length;
-                    renderPage(currentPage);
-                });
-                pageElement.appendChild(moreButton);
-            } else if (pages.length > 1) {
-                // Add "Back" button on the last page
-                const backButton = document.createElement('button');
-                backButton.className = 'quick-reply-btn more-options';
-                backButton.textContent = 'Back';
-                backButton.addEventListener('click', () => {
-                    currentPage = 0;
-                    renderPage(currentPage);
-                });
-                pageElement.appendChild(backButton);
-            }
-            
-            container.appendChild(pageElement);
+            quickReplySection.appendChild(moreOptionsBtn);
         }
-        
-        // Initial render
-        renderPage(currentPage);
-        messageContainer.appendChild(container);
-        chatMessages.appendChild(messageContainer);
-        
-        // Ensure scroll to bottom after quick replies are added
-        setTimeout(scrollToBottom, 100);
     }
     
     function processMessage(message) {
@@ -1042,55 +943,4 @@ document.addEventListener('DOMContentLoaded', function() {
         console.table(allKeywords);
         return allKeywords;
     }
-
-    function handleUserInput(text) {
-        // Set the input value
-        userInput.value = text;
-        // Send the message
-        sendMessage();
-        
-        // Remove any quick reply container
-        const existingContainer = document.querySelector('.quick-reply-container');
-        if (existingContainer) {
-            existingContainer.remove();
-        }
-    }
-
-    // Ensure proper scrolling to the bottom of chat messages - improved for all devices
-    function scrollToBottom() {
-        const chatMessages = document.getElementById('chat-messages');
-        
-        // Use smooth scrolling on devices that support it
-        if ('scrollBehavior' in document.documentElement.style) {
-            chatMessages.scrollTo({
-                top: chatMessages.scrollHeight,
-                behavior: 'smooth'
-            });
-        } else {
-            // Fallback for browsers that don't support smooth scrolling
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-    }
-
-    // Add a scroll-to-bottom button - improved to work on all devices
-    function addScrollToBottomButton() {
-        const chatContainer = document.querySelector('.chat-container');
-        const scrollButton = document.createElement('button');
-        scrollButton.className = 'scroll-to-bottom';
-        scrollButton.innerHTML = '<i class="fas fa-arrow-down"></i>';
-        scrollButton.style.display = 'none'; // Initially hidden
-        scrollButton.setAttribute('aria-label', 'Scroll to bottom'); // Accessibility improvement
-        scrollButton.addEventListener('click', scrollToBottom);
-        chatContainer.appendChild(scrollButton);
-        
-        // Initial check for scroll position
-        const chatMessages = document.getElementById('chat-messages');
-        const isAtBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight < 50;
-        scrollButton.style.display = isAtBottom ? 'none' : 'flex';
-        
-        // Button is now shown/hidden in the main scroll event listener in setupScrollBehaviors
-    }
-
-    // Call this when the DOM is loaded
-    addScrollToBottomButton();
 }); 
