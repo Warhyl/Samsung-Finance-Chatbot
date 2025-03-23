@@ -24,7 +24,7 @@ body::before {
 }
 
 .chat-container {
-    width: 100%;
+    width: 5%;
     height: 100vh;
     max-width: 450px;
     display: flex;
