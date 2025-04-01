@@ -7,6 +7,25 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Add text justification to main content areas */
+        .hero-content p,
+        .about-content p,
+        .message-box p,
+        .policy-content p {
+            text-align: justify;
+        }
+
+        /* Ensure headings remain centered */
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        /* Keep footer text centered */
+        .footer-content p {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <nav class="main-nav">
@@ -17,9 +36,9 @@
             </div>
             <div class="nav-links">
                 <a href="#home" class="active">Home</a>
-                <a href="#features">Features</a>
-                <a href="#chatbot">Chatbot</a>
                 <a href="#about">About</a>
+                <a href="https://docs.google.com/document/d/1oJkWpA3Bt5GuYXkzjA4UdOe5m9s9ARRDPxAk6oozRWU/edit?tab=t.0#heading=h.4ed1ewo9cuyx" target="_blank" rel="noopener noreferrer">FAQs</a>
+                <a href="https://www.youtube.com/@akosimangramon" target="_blank" rel="noopener noreferrer">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -29,65 +48,7 @@
             <div class="hero-content">
                 <h1>Welcome to Samsung Finance+</h1>
                 <p>Your intelligent financial assistant powered by AI</p>
-                <a href="#chatbot" class="cta-button">Start Chatting</a>
-            </div>
-        </section>
-
-        <section id="features" class="features-section">
-            <h2>Key Features</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-robot"></i>
-                    <h3>AI-Powered Assistance</h3>
-                    <p>Get instant answers to your financial queries</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-lock"></i>
-                    <h3>Secure Conversations</h3>
-                    <p>Your data is protected with enterprise-grade security</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-clock"></i>
-                    <h3>24/7 Availability</h3>
-                    <p>Access financial support anytime, anywhere</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>Smart Analytics</h3>
-                    <p>Get insights into your financial decisions</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="chatbot" class="chatbot-section">
-            <div class="chat-container">
-                <div class="chat-header">
-                    <div class="logo-container">
-                        <div class="sf-logo">SF+</div>
-                        <div class="header-title">
-                            <h1>Samsung Finance+ Chatbot</h1>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="chat-content">
-                    <div class="chat-messages" id="chat-messages">
-                        <!-- Messages will appear here -->
-                    </div>
-                    
-                    <div class="quick-reply-section" id="quick-reply-section">
-                        <!-- Quick reply buttons will be added here by JS -->
-                    </div>
-                </div>
-                
-                <div class="chat-input-container">
-                    <div class="chat-input">
-                        <input type="text" id="user-input" placeholder="Type your message here...">
-                        <button id="send-button">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
+                <a href="chatbot.html" class="cta-button">Start Chatting</a>
             </div>
         </section>
 
@@ -95,6 +56,11 @@
             <div class="about-content">
                 <h2>About Samsung Finance+</h2>
                 <p>Samsung Finance+ is your trusted companion for all financial matters. Our AI-powered chatbot provides instant, accurate responses to your queries while ensuring your data privacy and security.</p>
+                <div class="policy-links">
+                    <a href="https://www.samsung.com/ph/info/privacy/" class="policy-link" target="_blank" rel="noopener noreferrer">Samsung's Privacy Policy</a>
+                    <span class="separator">|</span>
+                    <a href="https://www.unionbankph.com/privacy-security#0" class="policy-link" target="_blank" rel="noopener noreferrer">Union Bank's Privacy Policy Statement</a>
+                </div>
             </div>
         </section>
     </main>
@@ -104,7 +70,5 @@
             <p>&copy; 2024 Samsung Finance+. All rights reserved.</p>
         </div>
     </footer>
-
-    <script src="script.js?v=1.5"></script>
 </body>
-</html> 
+</html>
