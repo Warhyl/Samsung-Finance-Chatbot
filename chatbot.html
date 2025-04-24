@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, viewport-fit=cover">
+    <title>Samsung Finance+ Chatbot</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="chatbot-page">
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="sf-logo.svg" alt="SF+ Logo" class="nav-logo-img">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Policy Agreement Dialog -->
+    <div class="policy-agreement-overlay" id="policy-dialog">
+        <div class="policy-dialog">
+            <div class="policy-content">
+                <h2>Terms and Conditions</h2>
+                    
+                <div class="message-box">
+                    <p>Hi! Thanks for contacting Samsung Finance+!</p> To get us started please choose one of the options below. Just so you're aware, if you have any questions about how we, Samsung Electronics Philippines Corporation, use your personal information, you can find out more at <a href="https://www.samsung.com/ph/info/privacy/" target="_blank" rel="noopener noreferrer">https://www.samsung.com/ph/info/privacy/</a>. <p>This may include using your personal data to provide support related updates, and assess and improve the way we support our customers, including carrying out customer satisfaction surveys.</p>
+                </div>
+
+                <div class="message-box">
+                    <p>To proceed with chat support, I agree to <a href="https://www.samsung.com/ph/info/privacy/" target="_blank" rel="noopener noreferrer">Samsung's Privacy Policy</a> and <a href="https://www.unionbankph.com/privacy-security#0" target="_blank" rel="noopener noreferrer">Union Bank's Privacy Policy Statement</a> and that my information will be used and disclosed in accordance with these policies.</p>
+                </div>
+
+                <div class="agreement-checkbox">
+                    <label>
+                        <input type="checkbox" id="policy-checkbox" required>
+                        <span>I have read and agree to the Privacy Policies</span>
+                        <span class="required">*</span>
+                    </label>
+                </div>
+
+                <button id="submit-agreement" class="submit-btn" disabled>Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot Interface (Initially Hidden) -->
+    <div class="chatbot-container" id="chatbot-interface" style="display: none;">
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="logo-container">
+                    <div class="sf-logo"><a href="index.html" style="text-decoration: none; color: inherit;">SF+</a></div>
+                    <div class="header-title">
+                        <h1><a href="index.html" style="text-decoration: none; color: inherit;">Samsung Finance+ Chatbot</a></h1>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-content">
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Messages will appear here -->
+                </div>
+                
+                <div class="quick-reply-section" id="quick-reply-section">
+                    <!-- Quick reply buttons will be added here by JS -->
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input">
+                    <input type="text" id="user-input" placeholder="Type your message here...">
+                    <button id="send-button">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Policy agreement handling
+        const policyDialog = document.getElementById('policy-dialog');
+        const chatbotInterface = document.getElementById('chatbot-interface');
+        const policyCheckbox = document.getElementById('policy-checkbox');
+        const submitButton = document.getElementById('submit-agreement');
+
+        // Enable/disable submit button based on checkbox
+        policyCheckbox.addEventListener('change', function() {
+            submitButton.disabled = !this.checked;
+        });
+
+        // Handle submit button click
+        submitButton.addEventListener('click', function() {
+            if (policyCheckbox.checked) {
+                policyDialog.style.display = 'none';
+                chatbotInterface.style.display = 'flex';
+            }
+        });
+    </script>
+    <script src="script.js?v=1.5"></script>
+</body>
+</html> 

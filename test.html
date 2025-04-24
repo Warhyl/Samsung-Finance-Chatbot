@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Samsung Finance+ Chatbot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>Samsung Finance+ Assistant Test</h1>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type 'kyc', 'loan payment', etc. to test">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <!-- Add console logger -->
+    <div style="margin-top: 20px; border: 1px solid #ccc; padding: 10px; max-height: 200px; overflow-y: auto;">
+        <h3>Console Log:</h3>
+        <pre id="console-log"></pre>
+    </div>
+
+    <script>
+        // Console logger
+        const consoleLog = document.getElementById('console-log');
+        const originalConsole = window.console;
+        window.console = {
+            log: function(message) {
+                originalConsole.log(message);
+                if (typeof message === 'object') {
+                    try {
+                        message = JSON.stringify(message, null, 2);
+                    } catch (e) {
+                        message = String(message);
+                    }
+                }
+                consoleLog.textContent += message + '\n';
+            },
+            error: function(message) {
+                originalConsole.error(message);
+                consoleLog.textContent += 'ERROR: ' + message + '\n';
+                consoleLog.style.color = 'red';
+            },
+            warn: function(message) {
+                originalConsole.warn(message);
+                consoleLog.textContent += 'WARNING: ' + message + '\n';
+            }
+        };
+
+        // Special test function
+        function testKnowledgeBase() {
+            console.log("Testing knowledge base...");
+            try {
+                // Check if modules are defined
+                console.log("KYC Issues: " + (typeof kycIssuesKnowledge !== 'undefined'));
+                console.log("Payment & Loan Issues: " + (typeof paymentLoanIssuesKnowledge !== 'undefined'));
+                console.log("System Errors: " + (typeof appSystemErrorsKnowledge !== 'undefined'));
+                
+                // Test a sample query
+                const testQuery = "kyc failed";
+                console.log("Testing query: " + testQuery);
+                
+                // Manually check
+                document.getElementById('user-input').value = testQuery;
+                document.getElementById('send-button').click();
+            } catch (e) {
+                console.error("Test error: " + e.message);
+            }
+        }
+
+        // Call test after script loads
+        window.addEventListener('load', function() {
+            setTimeout(testKnowledgeBase, 1000);
+        });
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html> 

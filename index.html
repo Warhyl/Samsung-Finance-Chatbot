@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, viewport-fit=cover">
+    <title>Samsung Finance+ Chatbot</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://samsung-finance-chatbot.vercel.app/">
+    <meta property="og:title" content="Samsung Finance+ Chatbot">
+    <meta property="og:description" content="Your trusted companion for all Samsung Finance+ questions and concerns">
+    <meta property="og:image" content="https://samsung-finance-chatbot.vercel.app/sf-preview.png">
+    <meta property="og:image:width" content="562">
+    <meta property="og:image:height" content="190">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://samsung-finance-chatbot.vercel.app/">
+    <meta property="twitter:title" content="Samsung Finance+ Chatbot">
+    <meta property="twitter:description" content="Your trusted companion for all Samsung Finance+ questions and concerns">
+    <meta property="twitter:image" content="https://samsung-finance-chatbot.vercel.app/sf-preview.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="sf-plus-logo.svg">
+    <link rel="apple-touch-icon" href="sf-preview.png">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Add text justification to main content areas */
+        .hero-content p,
+        .about-content p,
+        .message-box p,
+        .policy-content p {
+            text-align: justify;
+        }
+
+        /* Ensure headings remain centered */
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        /* Keep footer text centered */
+        .footer-content p {
+            text-align: center;
+        }
+
+        /* Contact Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: modalopen 0.4s;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: #1428a0;
+        }
+
+        .modal-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #1428a0;
+        }
+
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-60px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="sf-plus-logo.svg" alt="Samsung Finance+ Logo" class="nav-logo-img">
+                <span>Samsung Finance+</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="https://docs.google.com/document/d/1oJkWpA3Bt5GuYXkzjA4UdOe5m9s9ARRDPxAk6oozRWU/edit?tab=t.0#heading=h.4ed1ewo9cuyx" target="_blank" rel="noopener noreferrer">FAQs</a>
+                <a href="#" id="contact-btn">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="hero-content">
+                <h1>Welcome to Samsung Finance+ Philippines</h1>
+                <a href="chatbot.html" class="cta-button">Start Chatting</a>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="about-content">
+                <h2>About Samsung Finance+</h2>
+                <p>Samsung Finance+ is your trusted companion for all financial matters. Our AI-powered chatbot provides instant, accurate responses to your queries while ensuring your data privacy and security.</p>
+                <div class="policy-links">
+                    <a href="https://www.samsung.com/ph/info/privacy/" class="policy-link" target="_blank" rel="noopener noreferrer">Samsung's Privacy Policy</a>
+                    <span class="separator">|</span>
+                    <a href="https://www.unionbankph.com/privacy-security#0" class="policy-link" target="_blank" rel="noopener noreferrer">Union Bank's Privacy Policy Statement</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Contact Us</h3>
+            <p><strong>Mobile Devices Hotline (Toll-Free to all networks):</strong><br> 
+            #GALAXY (dial #425299)</p>
+            <p><strong>Standard Landline (for Mobile Devices):</strong><br>
+            (02) 8422-2177</p>
+            <p><strong>Operating Hours:</strong><br>
+            Monday to Friday, 9:00 AM to 6:00 PM</p>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Samsung Finance+. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Contact Modal Functionality
+        const contactModal = document.getElementById('contact-modal');
+        const contactBtn = document.getElementById('contact-btn');
+        const closeBtn = document.querySelector('.close-btn');
+
+        contactBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            contactModal.style.display = 'block';
+        });
+
+        closeBtn.addEventListener('click', function() {
+            contactModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(e) {
+            if (e.target == contactModal) {
+                contactModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
