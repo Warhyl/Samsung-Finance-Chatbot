@@ -21,9 +21,9 @@ body::before {
     right: 0;
     bottom: 0;
     background-image: 
-        radial-gradient(circle at 15% 15%, rgba(26, 118, 210, 0.04) 0%, transparent 25%),
-        radial-gradient(circle at 85% 85%, rgba(0, 68, 148, 0.06) 0%, transparent 30%),
-        radial-gradient(circle at 50% 50%, rgba(26, 118, 210, 0.03) 0%, transparent 70%);
+        radial-gradient(circle at 15% 15%, rgba(20, 40, 160, 0.04) 0%, transparent 25%),
+        radial-gradient(circle at 85% 85%, rgba(20, 40, 160, 0.06) 0%, transparent 30%),
+        radial-gradient(circle at 50% 50%, rgba(20, 40, 160, 0.03) 0%, transparent 70%);
     z-index: -1;
 }
 
@@ -60,7 +60,7 @@ body::before {
 }
 
 .chat-header {
-    background: #0a4da2;
+    background: #1428a0;
     color: white;
     padding: 25px 0px 25px 0px;
     z-index: 1000;
@@ -69,7 +69,7 @@ body::before {
     left: 0;
     right: 0;
     width: 100%;
-    box-shadow: 0 2px 8px rgba(10, 77, 162, 0.15);
+    box-shadow: 0 2px 8px rgba(20, 40, 160, 0.15);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -95,7 +95,7 @@ body::before {
     justify-content: center;
     height: 44px;
     width: 44px;
-    background-color: #0a4da2;
+    background-color: #1428a0;
     color: #fff;
     font-weight: bold;
     font-size: 18px;
@@ -163,11 +163,11 @@ body::before {
 }
 
 .user-message {
-    background: linear-gradient(135deg, #0a4da2 0%, #0E5CBF 100%);
+    background: linear-gradient(135deg, #1428a0 0%, #192db3 100%);
     color: white;
     margin-left: auto;
     border-bottom-right-radius: 4px;
-    box-shadow: 0 2px 5px rgba(10, 77, 162, 0.15);
+    box-shadow: 0 2px 5px rgba(20, 40, 160, 0.15);
 }
 
 .bot-message {
@@ -191,7 +191,7 @@ body::before {
 .quick-reply-btn {
     background-color: white;
     border: 1px solid #e0e9f5;
-    color: #0a4da2;
+    color: #1428a0;
     border-radius: 10px;
     padding: 6px 12px;
     font-size: 13px;
@@ -222,7 +222,7 @@ body::before {
 
 .quick-reply-btn:hover {
     background-color: #f0f6ff;
-    box-shadow: 0 3px 8px rgba(10, 77, 162, 0.08);
+    box-shadow: 0 3px 8px rgba(20, 40, 160, 0.08);
     transform: translateY(-1px);
 }
 
@@ -246,7 +246,7 @@ body::before {
 .nav-button {
     background-color: #f5f8fc !important;
     border: 1px solid #e0e9f5 !important;
-    color: #0a4da2 !important;
+    color: #1428a0 !important;
     font-weight: 500 !important;
     padding: 6px 15px !important;
     min-width: 80px !important;
@@ -260,11 +260,11 @@ body::before {
 }
 
 .more-options-btn {
-    background: linear-gradient(135deg, #0a4da2 0%, #0E5CBF 100%);
+    background: linear-gradient(135deg, #1428a0 0%, #192db3 100%);
     color: white;
     border: none;
     font-weight: 500;
-    box-shadow: 0 2px 5px rgba(10, 77, 162, 0.15);
+    box-shadow: 0 2px 5px rgba(20, 40, 160, 0.15);
     transition: all 0.2s;
     width: 100%;
     height: 40px;
@@ -272,8 +272,8 @@ body::before {
 }
 
 .more-options-btn:hover {
-    background: linear-gradient(135deg, #0E5CBF 0%, #1565C0 100%);
-    box-shadow: 0 3px 8px rgba(10, 77, 162, 0.2);
+    background: linear-gradient(135deg, #192db3 0%, #213bc0 100%);
+    box-shadow: 0 3px 8px rgba(20, 40, 160, 0.2);
     transform: translateY(-1px);
     color: white;
 }
@@ -309,7 +309,7 @@ body::before {
 
 .chat-input:focus-within {
     background-color: #f0f6ff;
-    box-shadow: 0 1px 3px rgba(10, 77, 162, 0.1), inset 0 1px 2px rgba(10, 77, 162, 0.05);
+    box-shadow: 0 1px 3px rgba(20, 40, 160, 0.1), inset 0 1px 2px rgba(20, 40, 160, 0.05);
 }
 
 .chat-input input {
@@ -325,7 +325,7 @@ body::before {
 .chat-input button {
     width: 34px;
     height: 34px;
-    background: linear-gradient(135deg, #0a4da2 0%, #0E5CBF 100%);
+    background: linear-gradient(135deg, #1428a0 0%, #192db3 100%);
     border: none;
     color: white;
     border-radius: 50%;
@@ -334,13 +334,13 @@ body::before {
     align-items: center;
     justify-content: center;
     margin-left: 4px;
-    box-shadow: 0 2px 4px rgba(10, 77, 162, 0.2);
+    box-shadow: 0 2px 4px rgba(20, 40, 160, 0.2);
     transition: all 0.2s;
 }
 
 .chat-input button:hover {
     transform: scale(1.05);
-    box-shadow: 0 3px 6px rgba(10, 77, 162, 0.25);
+    box-shadow: 0 3px 6px rgba(20, 40, 160, 0.25);
 }
 
 .chat-input button i {
@@ -378,7 +378,7 @@ body::before {
 .typing-indicator span {
     height: 7px;
     width: 7px;
-    background: #0a4da2;
+    background: #1428a0;
     border-radius: 50%;
     display: inline-block;
     margin: 0 2px;
@@ -413,12 +413,12 @@ body::before {
 }
 
 .chat-content::-webkit-scrollbar-thumb {
-    background: rgba(10, 77, 162, 0.15);
+    background: rgba(20, 40, 160, 0.15);
     border-radius: 10px;
 }
 
 .chat-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(10, 77, 162, 0.25);
+    background: rgba(20, 40, 160, 0.25);
 }
 
 /* Mobile responsive design */
@@ -478,7 +478,7 @@ body::before {
     gap: 10px;
     font-size: 1.25rem;
     font-weight: 600;
-    color: #0a4da2;
+    color: #1428a0;
 }
 
 .nav-logo-img {
@@ -501,7 +501,7 @@ body::before {
 
 .nav-links a:hover,
 .nav-links a.active {
-    color: #0a4da2;
+    color: #1428a0;
 }
 
 main {
@@ -510,7 +510,7 @@ main {
 }
 
 .hero-section {
-    background: linear-gradient(135deg, #0a4da2 0%, #0E5CBF 100%);
+    background: linear-gradient(135deg, #1428a0 0%, #192db3 100%);
     color: white;
     padding: 6rem 2rem;
     text-align: center;
@@ -539,7 +539,7 @@ main {
 .cta-button {
     display: inline-block;
     background: white;
-    color: #0a4da2;
+    color: #1428a0;
     padding: 1rem 2rem;
     border-radius: 30px;
     text-decoration: none;
@@ -584,14 +584,14 @@ main {
 }
 
 .policy-link {
-    color: #0a4da2;
+    color: #1428a0;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s;
 }
 
 .policy-link:hover {
-    color: #0E5CBF;
+    color: #192db3;
     text-decoration: underline;
 }
 
@@ -601,7 +601,7 @@ main {
 }
 
 .main-footer {
-    background: #0a4da2;
+    background: #1428a0;
     color: white;
     padding: 2rem;
     text-align: center;
@@ -737,7 +737,7 @@ main {
 }
 
 .policy-content h2 {
-    color: #0a4da2;
+    color: #1428a0;
     margin: 0;
     font-size: 1.3rem;
 }
@@ -757,7 +757,7 @@ main {
 }
 
 .message-box a {
-    color: #0a4da2;
+    color: #1428a0;
     text-decoration: none;
 }
 
@@ -788,7 +788,7 @@ main {
 }
 
 .submit-btn {
-    background: #0a4da2;
+    background: #1428a0;
     color: white;
     border: none;
     padding: 0.8rem 1.8rem;
@@ -800,7 +800,7 @@ main {
 }
 
 .submit-btn:hover:not(:disabled) {
-    background: #0E5CBF;
+    background: #192db3;
 }
 
 .submit-btn:disabled {
