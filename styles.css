@@ -475,15 +475,16 @@ body::before {
 .nav-logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 10px;
     font-size: 1.25rem;
-    font-weight: 500;
+    font-weight: 600;
     color: #0a4da2;
 }
 
 .nav-logo-img {
-    height: 32px;
-    width: auto;
+    height: 44px;
+    width: 44px;
+    border-radius: 3px;
 }
 
 .nav-links {
